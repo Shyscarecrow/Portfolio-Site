@@ -4,7 +4,7 @@
  let card2Parent = '';
  let ready = true;
  let stopTimer = false;
- let cardCounter = 0;
+ let cardCounter = 0;        //Amount of opened cards at the same time
  
  document.querySelector(".restart").addEventListener("click", restart);
  document.querySelector(".deck").addEventListener("click", function() {stopTimer = false; timerStart()});
@@ -15,7 +15,7 @@
  //Open clicked cards and compare it: 
  
  function cardOpen(evt) {
-	if (evt.target.className == "card") {
+	if (evt.target.className == "card" && cardCounter != 2) {
 		evt.target.className += " open show";
 		
 		//Check if the clicked card is the first or a second of a pair:
@@ -23,6 +23,7 @@
 		if (!card1) {
 			card1 = evt.target.firstElementChild.className;
 			card1Parent = evt.target;
+			cardCounter = 1;
 		} else {
 			
 			//Increase amount of moves: 
@@ -36,6 +37,7 @@
 			}
 			card2 = evt.target.firstElementChild.className;
 			card2Parent = evt.target;
+			cardCounter = 2;
 						
 			//Matching a pair of opened cards: 
 			
@@ -44,10 +46,11 @@
 				card2Parent.className = "card open show match";
 				card1 = '';
 				card2 = '';
+				cardCounter = 0;
 				win();
 			} else {
 				setTimeout(function() {evt.target.className = "card close"; card1Parent.className = "card close"}, 700);
-				setTimeout(function() {evt.target.className = "card"; card1Parent.className = "card"; card1 = ''; card2 = ''}, 900);
+				setTimeout(function() {evt.target.className = "card"; card1Parent.className = "card"; card1 = ''; card2 = ''; cardCounter = 0}, 900);
 			}
 		}	
 		
